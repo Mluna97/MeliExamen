@@ -18,7 +18,7 @@ namespace ProyectoMeliApi.Controllers
         AdnRepository adnRepo;
         StatsRepository statsRepo;
 
-        public MutanteController ()
+        public MutanteController()
         {
             adnRepo = new AdnRepository();
             statsRepo = new StatsRepository();
@@ -28,17 +28,23 @@ namespace ProyectoMeliApi.Controllers
         [Route("mutant")]
         public IActionResult IsMutant([FromBody] string[] dna)
         {
-            DTOAdn dtoAdn = adnRepo.Get(dna);
+            bool esValido = dna.Where(x => x.Length != dna.Length).ToList().Count == 0;
+            bool esMutante = false;
 
-            bool esMutante = dtoAdn.EsMutante ?? MutanteHelper.IsMutant(dna);
+            if (esValido)
+            {
+                DTOAdn dtoAdn = adnRepo.Get(dna);
 
-            if (!dtoAdn.EsMutante.HasValue)
-                adnRepo.Insert(new DTOAdn(dna, esMutante));
+                esMutante = dtoAdn.EsMutante ?? MutanteHelper.IsMutant(dna);
+
+                if (!dtoAdn.EsMutante.HasValue)
+                    adnRepo.Insert(new DTOAdn(dna, esMutante));
+            }
 
             if (esMutante)
-                return Ok();    // 200
+                return Ok("El DNA ingresado es de un MUTANTE");    // 200
             else
-                return StatusCode(403);
+                return StatusCode(403, esValido ? "El DNA ingresado NO es de un mutante" : "El DNA no es de NxN");
         }
 
         [HttpGet]

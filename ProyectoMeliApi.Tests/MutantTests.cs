@@ -26,7 +26,7 @@ namespace ProyectoMeliApi.Tests
             var controller = new MutanteController();
             ActionResult response = (ActionResult)controller.IsMutant(new string[] { });
 
-            var obj = Assert.IsType<StatusCodeResult>(response) as StatusCodeResult;
+            var obj = Assert.IsType<ObjectResult>(response) as ObjectResult;
             Assert.Equal(403, obj.StatusCode);
 
             return null;
@@ -37,7 +37,7 @@ namespace ProyectoMeliApi.Tests
         {
             var controller = new MutanteController();
             var response = controller.IsMutant(new string[] { "ATGCGA", "CAGTGC", "TTATGT", "AGAAGG", "CCCCTA", "TCACTG" });
-            Assert.IsType<OkResult>(response);
+            Assert.IsType<OkObjectResult>(response);
             return null;
         }
 
@@ -46,7 +46,7 @@ namespace ProyectoMeliApi.Tests
         {
             var controller = new MutanteController();
             var response = controller.IsMutant(new string[] { "ATGCGA", "CAGTGC", "TTATCT", "AGAAGG", "CACCTA", "TCACTG" });
-            Assert.IsType<OkResult>(response);
+            Assert.IsType<OkObjectResult>(response);
             return null;
         }
 
@@ -55,7 +55,7 @@ namespace ProyectoMeliApi.Tests
         {
             var controller = new MutanteController();
             var response = controller.IsMutant(new string[] { "ATGCGA", "CGGTGC", "TTATGT", "AGAAGG", "CACCTA", "TCACTG" });
-            Assert.IsType<OkResult>(response);
+            Assert.IsType<OkObjectResult>(response);
             return null;
         }
 
@@ -64,7 +64,7 @@ namespace ProyectoMeliApi.Tests
         {
             var controller = new MutanteController();
             var response = controller.IsMutant(new string[] { "ATGCGA", "CGGTGC", "TTATCT", "AGAAGG", "CCCCTA", "TCACTG" });
-            Assert.IsType<OkResult>(response);
+            Assert.IsType<OkObjectResult>(response);
             return null;
         }
 
@@ -73,7 +73,7 @@ namespace ProyectoMeliApi.Tests
         {
             var controller = new MutanteController();
             var response = controller.IsMutant(new string[] { "ATGCGA", "CAGTGC", "TTATCT", "AGACGG", "CCCATA", "TCACTG" });
-            Assert.IsType<OkResult>(response);
+            Assert.IsType<OkObjectResult>(response);
             return null;
         }
 
@@ -82,9 +82,35 @@ namespace ProyectoMeliApi.Tests
         {
             var controller = new MutanteController();
             var response = controller.IsMutant(new string[] { "ATGATG", "GGATAG", "CTGGAT", "CACGTG", "GACTAC", "GCATAT" });
-            
-            var obj = Assert.IsType<StatusCodeResult>(response) as StatusCodeResult;
+
+            var obj = Assert.IsType<ObjectResult>(response) as ObjectResult;
             Assert.Equal(403, obj.StatusCode);
+
+            return null;
+        }
+
+        [Fact]
+        public Task IsMutant_ReturnForbidResult_GivenNonMutantADN_DNAFormatNotNxN_V1()
+        {
+            var controller = new MutanteController();
+            var response = controller.IsMutant(new string[] { "ATGATG", "GGATAG", "CTGGAT", "CACGTG", "GACTAC" });
+
+            var obj = Assert.IsType<ObjectResult>(response) as ObjectResult;
+            Assert.Equal(403, obj.StatusCode);
+            Assert.Equal("El DNA no es de NxN", obj.Value);
+
+            return null;
+        }
+
+        [Fact]
+        public Task IsMutant_ReturnForbidResult_GivenNonMutantADN_DNAFormatNotNxN_V2()
+        {
+            var controller = new MutanteController();
+            var response = controller.IsMutant(new string[] { "ATGAG", "GGATG", "CTGGA", "CACGT", "GACTA", "GCAAT" });
+
+            var obj = Assert.IsType<ObjectResult>(response) as ObjectResult;
+            Assert.Equal(403, obj.StatusCode);
+            Assert.Equal("El DNA no es de NxN", obj.Value);
 
             return null;
         }
