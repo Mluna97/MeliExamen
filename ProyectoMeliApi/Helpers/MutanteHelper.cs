@@ -28,8 +28,7 @@ namespace ProyectoMeliApi.Helpers
         private static readonly int LongitudNecesaria = 4;
 
         private static readonly IList<char> CaracteresValidos = new List<char>() { 'A', 'C', 'G', 'T' };
-
-        // aca va toda la logica 
+ 
         public static bool IsMutant(string[] adn)
         {
             char[][] matriz = adn.Select(x => x.ToCharArray()).ToArray();

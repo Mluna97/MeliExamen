@@ -15,10 +15,11 @@ namespace ProyectoMeliApi.Repository
         {
             connection = new SqlConnection(DBHelper.GetMeliConnectionString());
         }
+        ~MutantRepository() { connection.Dispose(); }
 
         public DTOStats GetStats()
         {
-            string queryString = "SELECT COUNT(EsMutante) Humanos, SUM(CASE WHEN EsMutante = 1 THEN 1 ELSE 0 END) Mutantes FROM AdnProcesados ";
+            string queryString = "SELECT COUNT(EsMutante) Humanos, SUM(CASE WHEN EsMutante = 1 THEN 1 ELSE 0 END) Mutantes FROM AdnProcesados";
             DTOStats stats = new DTOStats();
 
             try
@@ -38,7 +39,7 @@ namespace ProyectoMeliApi.Repository
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                throw (e);
             }
             finally
             {
@@ -71,7 +72,7 @@ namespace ProyectoMeliApi.Repository
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                throw (e);
             }
             finally
             {
@@ -107,7 +108,7 @@ namespace ProyectoMeliApi.Repository
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine(e.Message);
+                        throw (e);
                     }
                     finally
                     {

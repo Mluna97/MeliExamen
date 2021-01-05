@@ -11,6 +11,6 @@ namespace ProyectoMeliApi.Models
 
         public int CountHumanDNA { get; set; }
 
-        public double Ratio { get { return CountHumanDNA != 0 ? CountMutantDNA / CountHumanDNA : 0; } }
+        public double Ratio { get { return CountHumanDNA != 0 ? (double) CountMutantDNA / CountHumanDNA : 0; } }
     }
 }
