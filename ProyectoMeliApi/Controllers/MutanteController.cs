@@ -15,22 +15,25 @@ namespace ProyectoMeliApi.Controllers
     [Route("api/[controller]")]
     public class MutanteController : Controller
     {
-        MutantRepository repo;
+        AdnRepository adnRepo;
+        StatsRepository statsRepo;
 
         public MutanteController ()
         {
-            repo = new MutantRepository();
+            adnRepo = new AdnRepository();
+            statsRepo = new StatsRepository();
         }
+
         [HttpPost]
         [Route("mutant")]
         public IActionResult IsMutant([FromBody] string[] dna)
         {
-            DTOAdn dtoAdn = repo.GetAdn(dna);
+            DTOAdn dtoAdn = adnRepo.Get(dna);
 
             bool esMutante = dtoAdn.EsMutante ?? MutanteHelper.IsMutant(dna);
 
             if (!dtoAdn.EsMutante.HasValue)
-                repo.InsertAdn(new DTOAdn(dna, esMutante));
+                adnRepo.Insert(new DTOAdn(dna, esMutante));
 
             if (esMutante)
                 return Ok();    // 200
@@ -42,9 +45,9 @@ namespace ProyectoMeliApi.Controllers
         [Route("stats")]
         public JsonResult GetStats()
         {
-            DTOStats stats = repo.GetStats();
+            DTOStats stats = statsRepo.Get();
 
-            StatModel statsModel = new StatModel()
+            StatsModel statsModel = new StatsModel()
             {
                 CountHumanDNA = stats.CountHumanDNA,
                 CountMutantDNA = stats.CountMutantDNA

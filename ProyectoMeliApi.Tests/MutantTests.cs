@@ -24,19 +24,55 @@ namespace ProyectoMeliApi.Tests
         public Task IsMutant_ReturnForbidResult_GivenEmptyArray()
         {
             var controller = new MutanteController();
-            ActionResult response = (ActionResult) controller.IsMutant(new string[] { });
+            ActionResult response = (ActionResult)controller.IsMutant(new string[] { });
 
             var obj = Assert.IsType<StatusCodeResult>(response) as StatusCodeResult;
             Assert.Equal(403, obj.StatusCode);
-    
+
             return null;
         }
 
         [Fact]
-        public Task IsMutant_ReturnOkResult_GivenMutantADN_V1()
+        public Task IsMutant_ReturnOkResult_GivenMutantADN_MultipleCauses()
         {
             var controller = new MutanteController();
             var response = controller.IsMutant(new string[] { "ATGCGA", "CAGTGC", "TTATGT", "AGAAGG", "CCCCTA", "TCACTG" });
+            Assert.IsType<OkResult>(response);
+            return null;
+        }
+
+        [Fact]
+        public Task IsMutant_ReturnOkResult_GivenMutantADN_RightDiagonal()
+        {
+            var controller = new MutanteController();
+            var response = controller.IsMutant(new string[] { "ATGCGA", "CAGTGC", "TTATCT", "AGAAGG", "CACCTA", "TCACTG" });
+            Assert.IsType<OkResult>(response);
+            return null;
+        }
+
+        [Fact]
+        public Task IsMutant_ReturnOkResult_GivenMutantADN_Vertical()
+        {
+            var controller = new MutanteController();
+            var response = controller.IsMutant(new string[] { "ATGCGA", "CGGTGC", "TTATGT", "AGAAGG", "CACCTA", "TCACTG" });
+            Assert.IsType<OkResult>(response);
+            return null;
+        }
+
+        [Fact]
+        public Task IsMutant_ReturnOkResult_GivenMutantADN_Horizontal()
+        {
+            var controller = new MutanteController();
+            var response = controller.IsMutant(new string[] { "ATGCGA", "CGGTGC", "TTATCT", "AGAAGG", "CCCCTA", "TCACTG" });
+            Assert.IsType<OkResult>(response);
+            return null;
+        }
+
+        [Fact]
+        public Task IsMutant_ReturnOkResult_GivenMutantADN_LeftDiagonal()
+        {
+            var controller = new MutanteController();
+            var response = controller.IsMutant(new string[] { "ATGCGA", "CAGTGC", "TTATCT", "AGACGG", "CCCATA", "TCACTG" });
             Assert.IsType<OkResult>(response);
             return null;
         }

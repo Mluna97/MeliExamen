@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ProyectoMeliApi.Models
 {
-    public class StatModel
+    public class StatsModel
     {
         public int CountMutantDNA { get; set; }
 
