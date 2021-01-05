@@ -15,13 +15,13 @@ namespace ProyectoMeliApi.Controllers
     [Route("api/[controller]")]
     public class MutanteController : Controller
     {
-        AdnRepository adnRepo;
-        StatsRepository statsRepo;
+        IAdnRepository AdnRepo = new AdnRepository();
+        IStatsRepository StatsRepo = new StatsRepository();
 
-        public MutanteController()
+        public MutanteController(IAdnRepository adnRepository = null)
         {
-            adnRepo = new AdnRepository();
-            statsRepo = new StatsRepository();
+            if (adnRepository != null)
+                AdnRepo = adnRepository;
         }
 
         [HttpPost]
@@ -33,12 +33,12 @@ namespace ProyectoMeliApi.Controllers
 
             if (esValido)
             {
-                DTOAdn dtoAdn = adnRepo.Get(dna);
+                DTOAdn dtoAdn = AdnRepo.Get(dna);
 
                 esMutante = dtoAdn.EsMutante ?? MutanteHelper.IsMutant(dna);
 
                 if (!dtoAdn.EsMutante.HasValue)
-                    adnRepo.Insert(new DTOAdn(dna, esMutante));
+                    AdnRepo.Insert(new DTOAdn(dna, esMutante));
             }
 
             if (esMutante)
@@ -51,7 +51,7 @@ namespace ProyectoMeliApi.Controllers
         [Route("stats")]
         public JsonResult GetStats()
         {
-            DTOStats stats = statsRepo.Get();
+            DTOStats stats = StatsRepo.Get();
 
             StatsModel statsModel = new StatsModel()
             {

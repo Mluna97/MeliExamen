@@ -20,7 +20,6 @@ namespace ProyectoMeliApi.Helpers
             string hostname = "melidb.cptvcpynwt2g.sa-east-1.rds.amazonaws.com";//appConfig["RDS_HOSTNAME"];
             string port = "1433";//appConfig["RDS_PORT"];
 
-            //return "Data Source=" + hostname + ";Initial Catalog=" + dbname + ";User ID=" + username + ";Password=" + password + ";";
             return "Server=" + hostname + ";Database=" + dbname + ";User ID=" + username + ";Password=" + password + ";";
         }
     }

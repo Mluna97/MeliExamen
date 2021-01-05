@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ProyectoMeliApi.Repository
 {
-    public class AdnRepository
+    public class AdnRepository : IAdnRepository
     {
         private SqlConnection connection;
         public AdnRepository()

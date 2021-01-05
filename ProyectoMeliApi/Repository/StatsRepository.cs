@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ProyectoMeliApi.Repository
 {
-    public class StatsRepository
+    public class StatsRepository: IStatsRepository
     {
         private SqlConnection connection;
         public StatsRepository()
